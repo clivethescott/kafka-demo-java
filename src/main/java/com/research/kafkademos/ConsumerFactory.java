@@ -11,8 +11,8 @@ import java.util.Properties;
 
 public class ConsumerFactory {
 
-    public Consumer<Long, String> newConsumer() {
-        Properties props = new Properties();
+    public static Consumer<Long, String> newConsumer() {
+        final Properties props = new Properties();
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, ConsumerConstants.KAFKA_BROKERS);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, ConsumerConstants.GROUP_ID);
@@ -20,8 +20,9 @@ public class ConsumerFactory {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, ConsumerConstants.MAX_POLL_RECORDS);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, ConsumerConstants.OFFSET_RESET_EARLIER);
-        Consumer<Long, String> consumer = new KafkaConsumer<>(props);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, ConsumerConstants.OFFSET_RESET_EARLIEST);
+
+        final Consumer<Long, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList(ConsumerConstants.TOPIC_NAME));
         return consumer;
     }
